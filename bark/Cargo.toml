@@ -1,0 +1,32 @@
+[package]
+name = "bark"
+version = "0.6.0"
+edition = "2021"
+
+[features]
+default = ["opus"]
+opus = ["bark-core/opus"]
+
+[dependencies]
+bark-core = { workspace = true }
+bark-protocol = { workspace = true }
+
+alsa = "0.9"
+bitflags = { workspace = true }
+bytemuck = { workspace = true, features = ["extern_crate_alloc"] }
+derive_more = { workspace = true }
+env_logger = { version = "0.11", default-features = false, features = ["color", "auto-color", "humantime"] }
+libc = "0.2"
+log = { workspace = true }
+nix = { version = "0.29", features = ["time", "socket", "net", "poll", "user", "hostname"], default-features = false }
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+socket2 = "0.5"
+static_assertions = "1.1"
+structopt = "0.3"
+termcolor = "1.4"
+thiserror = { workspace = true }
+tokio = { version = "1.40", features = ["rt", "net", "sync"] }
+toml = "0.8"
+xdg = "2.5"

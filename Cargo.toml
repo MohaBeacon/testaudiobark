@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = [
+    "bark",
+    "bark-core",
+    "bark-protocol",
+]
+
+[workspace.dependencies]
+bark-core = { path = "bark-core" }
+bark-protocol = { path = "bark-protocol" }
+
+bitflags = { version = "2.6", features = ["bytemuck"] }
+bytemuck = { version = "1.18", features = ["derive", "must_cast"] }
+derive_more = { version = "1.0", features = ["into", "display"] }
+heapless = "0.8"
+log = "0.4"
+thiserror = "1.0"

@@ -1,0 +1,51 @@
+# Maintainer: Hailey Somerville <bark@hails.org>
+pkgname=bark
+pkgdesc="Synchronised multicast audio streaming"
+license=("AGPL3")
+url="https://github.com/haileys/bark"
+pkgver=0.6.0
+pkgrel=1
+
+pkgver() {
+    local ver
+
+    # get version string from git
+    ver="$(git describe --tags HEAD)"
+
+    # strip leading 'v'
+    [[ "$ver" == v* ]] && ver="${ver:1}"
+
+    # transform hyphens to underscores
+    ver="$(tr '-' '_' <<<"$ver")"
+
+    echo "'$ver'" >&2
+    echo "$ver"
+
+    # local number="$(git -C "$srcdir" rev-list --count HEAD)"
+    # local commit="$(git -C "$srcdir" rev-parse --short=7 HEAD)"
+    # echo "r${number}.g${commit}"
+}
+
+depends=(
+    "alsa-lib"
+    "gcc-libs"
+    "opus"
+    "speexdsp"
+)
+makedepends=("cargo")
+arch=("x86_64")
+
+prepare() {
+    export RUSTUP_TOOLCHAIN=stable
+    cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+    export CARGO_TARGET_DIR=target
+    export BARK_PKG_VERSION="$(pkgver)"
+    cargo build --frozen --release
+}
+
+package() {
+    install -Dm0755 -t "$pkgdir/usr/bin/" "$srcdir/target/release/bark"
+}
